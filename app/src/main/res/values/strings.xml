@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Gosea</string>
+    <string name="user_file">userfile</string>
+    <string name="token_file">tokenpass</string>
+    <string name="username_file">usernamepass</string>
+    <string name="password_file">passwordpass</string>
+    <string name="trip_file">trip</string>
+    <string name="trip_exist">trip_exist</string>
+    <string name="trip_id">trip_id</string>
+    <string name="trip_minute">trip_minute</string>
+
+    <string name="home">Home</string>
+    <string name="profile">Profile</string>
+    <string name="account">Account</string>
+    <string name="queue">Queue</string>
+    <string name="trips">Trips</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
