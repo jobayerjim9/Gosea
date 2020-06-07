@@ -8,7 +8,10 @@ import androidx.viewpager2.widget.ViewPager2;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -19,16 +22,20 @@ import com.gosea.captain.ui.fragment.HomeFragment;
 import com.gosea.captain.ui.fragment.QueueFragment;
 import com.gosea.captain.ui.fragment.TripsFragment;
 
+import java.util.Locale;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         initUi();
     }
 
     private void initUi() {
+
         SharedPreferences sharedPreferences=getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
         boolean existTrip=sharedPreferences.getBoolean(getString(R.string.trip_exist),false);
         if (existTrip) {
@@ -57,10 +64,9 @@ public class MainActivity extends AppCompatActivity {
                     viewPager.setCurrentItem(1);
                 } else if (item.getItemId()==R.id.queue) {
                     viewPager.setCurrentItem(2);
-                } else if (item.getItemId()==R.id.trips) {
+                } else if (item.getItemId() == R.id.trips) {
                     viewPager.setCurrentItem(3);
-                }
-                else {
+                } else {
                     return false;
                 }
                 return true;
@@ -68,7 +74,13 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
+    }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
 
     }
+
+
 }

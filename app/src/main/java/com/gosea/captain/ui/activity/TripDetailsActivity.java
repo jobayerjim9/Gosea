@@ -57,7 +57,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor=sharedPreferences.edit();
                 editor.clear();
                 editor.apply();
-                Toast.makeText(TripDetailsActivity.this, "Trip Ended Successfully", Toast.LENGTH_SHORT).show();
+                Toast.makeText(TripDetailsActivity.this, R.string.trip_ended_success, Toast.LENGTH_SHORT).show();
                 finish();
             }
 

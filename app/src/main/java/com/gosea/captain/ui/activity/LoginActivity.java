@@ -50,11 +50,11 @@ public class LoginActivity extends AppCompatActivity {
         final String password=passwordInput.getEditText().getText().toString().trim();
         if (username.isEmpty()) {
             usernameInput.setErrorEnabled(true);
-            usernameInput.setError("Please Enter Username");
+            usernameInput.setError(getString(R.string.please_enter_username));
         }
         else if (password.isEmpty()) {
             passwordInput.setErrorEnabled(true);
-            passwordInput.setError("Please Enter Password");
+            passwordInput.setError(getString(R.string.please_enter_password));
         }
         else {
             usernameInput.setErrorEnabled(false);
@@ -74,11 +74,11 @@ public class LoginActivity extends AppCompatActivity {
                             editor.putString(getString(R.string.username_file), username);
                             editor.putString(getString(R.string.password_file), password);
                             editor.apply();
-                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                            Toast.makeText(LoginActivity.this, "Login Successful", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                            Toast.makeText(LoginActivity.this, R.string.login_succesful, Toast.LENGTH_SHORT).show();
                         }
                         else {
-                            Toast.makeText(LoginActivity.this, "Login Unsuccessful", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, R.string.login_unsuccess, Toast.LENGTH_SHORT).show();
                         }
 
                     }

@@ -1,20 +1,80 @@
 <resources>
-    <string name="app_name">Gosea</string>
-    <string name="user_file">userfile</string>
-    <string name="token_file">tokenpass</string>
-    <string name="username_file">usernamepass</string>
-    <string name="password_file">passwordpass</string>
-    <string name="trip_file">trip</string>
-    <string name="trip_exist">trip_exist</string>
-    <string name="trip_id">trip_id</string>
-    <string name="trip_minute">trip_minute</string>
+    <string name="app_name" translatable="false">Gosea</string>
+    <string name="user_file" translatable="false">userfile</string>
+    <string name="token_file" translatable="false">tokenpass</string>
+    <string name="username_file" translatable="false">usernamepass</string>
+    <string name="password_file" translatable="false">passwordpass</string>
+    <string name="trip_file" translatable="false">trip</string>
+    <string name="trip_exist" translatable="false">trip_exist</string>
+    <string name="trip_id" translatable="false">trip_id</string>
+    <string name="trip_minute" translatable="false">trip_minute</string>
+    <string name="lang_file" translatable="false">lang_minute</string>
+    <string name="language" translatable="false">lang_key</string>
+
 
     <string name="home">Home</string>
     <string name="profile">Profile</string>
     <string name="account">Account</string>
     <string name="queue">Queue</string>
     <string name="trips">Trips</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="sign_in">Sign In</string>
+    <string name="enter_username">Enter Username</string>
+    <string name="enter_password">Enter Password</string>
+    <string name="ticket_is_verified">Ticket Is Verified</string>
+    <string name="start_trip">Start Trip</string>
+    <string name="trip_details">Trip Details</string>
+    <string name="minute_remaining">Minute Remaining</string>
+    <string name="finish_trip">Finish Trip</string>
+    <string name="check_in">Check In</string>
+    <string name="language_choose">Language</string>
+    <string name="share">Share</string>
+    <string name="rate_on_play_store">Rate On Play Store</string>
+    <string name="log_out">Log Out</string>
+    <string name="search_trips">Search Trips</string>
+    <string name="check_in_status">Check In Status</string>
+    <string name="scan_ticket">Scan Ticket</string>
+    <string name="captain">Captain</string>
+    <string name="queue_status">Queue Status</string>
+    <string name="accepted">Accepted</string>
+    <string name="rejected">Rejected</string>
+    <string name="completed">Completed</string>
+    <string name="please_enter_username">Please Enter Username</string>
+    <string name="please_enter_password">Please Enter Password</string>
+    <string name="login_succesful">Login Successful</string>
+    <string name="login_unsuccess">Login Unsuccessful</string>
+    <string name="cust_name">"Customer Name: "</string>
+    <string name="total_people">"Total People: "</string>
+    <string name="total_duration">"Total Duration: "</string>
+    <string name="trip_ended_success">Trip Ended Successfully</string>
+    <string name="choose_language">Choose Language</string>
+    <string name="check_in_success">Checked In Successfully</string>
+    <string name="check_out">Check Out</string>
+    <string name="cannot_be_empty">Cannot Be Empty</string>
+    <string name="remove_queue">Remove Queue</string>
+    <string name="removing_from_queue">Removing From Queue</string>
+    <string name="get_out_from_queue">You Get out From Queue!</string>
+    <string name="registering_queue">Registering On Queue</string>
+    <string name="you_are_in_queue">You are now in Queue!</string>
+    <string name="verifying_ticket">Verifying Ticket</string>
+    <string name="invalid_ticket">Invalid Ticket</string>
+    <string name="name">Name: </string>
+    <string name="total">Total</string>
+    <string name="people">Peoples</string>
+    <string name="date">Date: </string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="change_password">Change Password</string>
+    <string name="parking_zone">Parking Zone:</string>
+    <string name="parking_point">Parking Point:</string>
+    <string name="boat_type">Boat Type:</string>
+    <string name="boat_information">Boat Information</string>
+    <string name="update">Update</string>
+    <string name="enter_new">Enter A New Password To Update</string>
+    <string name="enter_again">Enter Password Again</string>
+    <string name="not_matched">Password Did not Match</string>
+    <string name="enter_current">Enter Current Password</string>
+    <string name="enter_current_password">Enter Current Password</string>
+    <string name="pass_change">Password Changed!</string>
+    <string name="pass_not_change">Password Not Changed</string>
+
 
 </resources>

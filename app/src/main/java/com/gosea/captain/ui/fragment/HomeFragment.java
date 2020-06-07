@@ -29,6 +29,7 @@ import com.gosea.captain.models.profile.ProfileResponse;
 import com.gosea.captain.models.ticket.TicketResponse;
 import com.gosea.captain.ui.activity.BarCodeActivity;
 import com.gosea.captain.ui.activity.TicketDetailActivity;
+import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -36,10 +37,10 @@ import retrofit2.Response;
 
 public class HomeFragment extends Fragment {
     EditText searchText;
-    ImageView searchButton;
-    TextView queueStatus,queueText,checkStatus;
+    ImageView searchButton, profileImage;
+    TextView queueStatus, queueText, checkStatus, usernameHome;
     ProfileResponse user;
-    CardView queueButton,scanTicket;
+    CardView queueButton, scanTicket;
     private Context context;
 
     public HomeFragment() {
@@ -51,14 +52,16 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v= inflater.inflate(R.layout.fragment_home, container, false);
-        queueButton=v.findViewById(R.id.queueButton);
-        checkStatus=v.findViewById(R.id.checkStatus);
-        searchText=v.findViewById(R.id.searchText);
-        searchButton=v.findViewById(R.id.searchButton);
-        scanTicket=v.findViewById(R.id.scanTicket);
-        queueStatus=v.findViewById(R.id.queueStatus);
-        queueText=v.findViewById(R.id.queueText);
+        View v = inflater.inflate(R.layout.fragment_home, container, false);
+        queueButton = v.findViewById(R.id.queueButton);
+        checkStatus = v.findViewById(R.id.checkStatus);
+        profileImage = v.findViewById(R.id.profileImage);
+        searchText = v.findViewById(R.id.searchText);
+        searchButton = v.findViewById(R.id.searchButton);
+        scanTicket = v.findViewById(R.id.scanTicket);
+        queueStatus = v.findViewById(R.id.queueStatus);
+        queueText = v.findViewById(R.id.queueText);
+        usernameHome = v.findViewById(R.id.usernameHome);
         scanTicket.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,9 +71,9 @@ public class HomeFragment extends Fragment {
         searchButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String code=searchText.getText().toString().trim();
+                String code = searchText.getText().toString().trim();
                 if (code.isEmpty()) {
-                    Toast.makeText(context, "Cannot Be Empty", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.cannot_be_empty, Toast.LENGTH_SHORT).show();
                 }
                 else {
                     searchText.clearFocus();
@@ -92,17 +95,17 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
                 ProfileResponse profileResponse=response.body();
                 if (profileResponse!=null) {
-                    Log.d("name",profileResponse.getUsername());
+                    Log.d("name", profileResponse.getUsername());
+                    usernameHome.setText(profileResponse.getUsername());
+                    Picasso.get().load("http://157.245.181.14:8080" + profileResponse.getProfile().getPic()).into(profileImage);
                     if (profileResponse.getProfile().isQ_status()) {
                         setInQueue();
-                    }
-                    else {
+                    } else {
                         setNotInQueue();
                     }
                     if (profileResponse.getProfile().isStatus()) {
                         setInCheck();
-                    }
-                    else {
+                    } else {
                         setNotInCheck();
                     }
                 }
@@ -117,7 +120,7 @@ public class HomeFragment extends Fragment {
 
     private void setInQueue() {
 
-        queueText.setText("Remove Queue");
+        queueText.setText(R.string.remove_queue);
         queueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,7 +137,7 @@ public class HomeFragment extends Fragment {
 
     private void setNotInQueue() {
 
-        queueText.setText("Queue");
+        queueText.setText(R.string.queue);
         queueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -172,7 +175,7 @@ public class HomeFragment extends Fragment {
     private void deleteQueue() {
         ProgressDialog progressDialoe=new ProgressDialog(context);
         progressDialoe.setCancelable(false);
-        progressDialoe.setMessage("Removing From Queue");
+        progressDialoe.setMessage(getString(R.string.removing_from_queue));
         progressDialoe.show();
         ApiInterface apiInterface=ApiClient.getClient(context).create(ApiInterface.class);
         Call<BasicResponse> call=apiInterface.delQueue();
@@ -183,7 +186,7 @@ public class HomeFragment extends Fragment {
                 BasicResponse basicResponse=response.body();
                 if (basicResponse!=null) {
                     if (basicResponse.getStatus()==200) {
-                        Toast.makeText(context, "You Get out From Queue!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.get_out_from_queue, Toast.LENGTH_SHORT).show();
                         setNotInQueue();
                     }
                 }
@@ -201,7 +204,7 @@ public class HomeFragment extends Fragment {
     private void registerQueue() {
         ProgressDialog progressDialoe=new ProgressDialog(context);
         progressDialoe.setCancelable(false);
-        progressDialoe.setMessage("Registering On Queue");
+        progressDialoe.setMessage(getString(R.string.registering_queue));
         progressDialoe.show();
         ApiInterface apiInterface=ApiClient.getClient(context).create(ApiInterface.class);
         Call<QueueModel> call=apiInterface.getQueue();
@@ -211,7 +214,7 @@ public class HomeFragment extends Fragment {
                 QueueModel queueModel=response.body();
                 progressDialoe.dismiss();
                 if (queueModel!=null) {
-                    Toast.makeText(context, "You are now in Queue!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, R.string.you_are_in_queue, Toast.LENGTH_SHORT).show();
                     setInQueue();
                 }
             }
@@ -227,7 +230,7 @@ public class HomeFragment extends Fragment {
     private void validateCode(String code) {
         ProgressDialog progressDialoe=new ProgressDialog(context);
         progressDialoe.setCancelable(false);
-        progressDialoe.setMessage("Verifying Ticket");
+        progressDialoe.setMessage(getString(R.string.verifying_ticket));
         progressDialoe.show();
         ApiInterface apiInterface= ApiClient.getClient(context).create(ApiInterface.class);
         Call<TicketResponse> call=apiInterface.getTicketDetails(code);
@@ -250,7 +253,7 @@ public class HomeFragment extends Fragment {
                         startActivity(intent);
                     }
                     else {
-                        Toast.makeText(context, "Invalid Ticket", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(context, R.string.invalid_ticket, Toast.LENGTH_SHORT).show();
                     }
 
                 }
@@ -259,7 +262,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFailure(Call<TicketResponse> call, Throwable t) {
                 progressDialoe.dismiss();
-                Toast.makeText(context, "Invalid Ticket", Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, R.string.invalid_ticket, Toast.LENGTH_SHORT).show();
 
             }
         });

@@ -31,26 +31,26 @@ public class TicketDetailActivity extends AppCompatActivity {
     }
 
     private void initUi() {
-        int id=getIntent().getIntExtra("id",-1);
-        String name=getIntent().getStringExtra("name");
-        String phone=getIntent().getStringExtra("phone");
-        int peoples=getIntent().getIntExtra("peoples",-1);
-        String timeName=getIntent().getStringExtra("timeName");
-        int duration=getIntent().getIntExtra("duration",-1);
-        TextView custName=findViewById(R.id.custName);
-        TextView totalPeople=findViewById(R.id.totalPeople);
-        TextView durationText=findViewById(R.id.duration);
-        String placeHolder="Customer Name: "+name;
+        int id = getIntent().getIntExtra("id", -1);
+        String name = getIntent().getStringExtra("name");
+        String phone = getIntent().getStringExtra("phone");
+        int peoples = getIntent().getIntExtra("peoples", -1);
+        String timeName = getIntent().getStringExtra("timeName");
+        int duration = getIntent().getIntExtra("duration", -1);
+        TextView custName = findViewById(R.id.custName);
+        TextView totalPeople = findViewById(R.id.totalPeople);
+        TextView durationText = findViewById(R.id.duration);
+        String placeHolder = getString(R.string.cust_name) + name;
         custName.setText(placeHolder);
-        placeHolder="Total People: "+peoples;
+        placeHolder = getString(R.string.total_people) + peoples;
         totalPeople.setText(placeHolder);
-        placeHolder="Total Duration: "+timeName;
+        placeHolder = getString(R.string.total_duration) + timeName;
         durationText.setText(placeHolder);
-        Button startTrip=findViewById(R.id.startTrip);
+        Button startTrip = findViewById(R.id.startTrip);
         startTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tripStart(id,duration);
+                tripStart(id, duration);
             }
         });
 

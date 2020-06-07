@@ -31,14 +31,14 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsViewHol
 
     @Override
     public void onBindViewHolder(@NonNull TripsViewHolder holder, int position) {
-        String placeHolder="Name: "+ticketData.get(position).getOrder().getName();
+        String placeHolder = ticketData.get(position).getOrder().getName();
         holder.custName.setText(placeHolder);
-        placeHolder="Total "+ticketData.get(position).getOrder().getPeoples()+" Peoples";
+        placeHolder = ticketData.get(position).getOrder().getPeoples() + "";
         holder.totalPeople.setText(placeHolder);
-        placeHolder="Total "+ticketData.get(position).getOrder().getTimeslot().getName();
+        placeHolder = ticketData.get(position).getOrder().getTimeslot().getName();
         holder.duration.setText(placeHolder);
-        placeHolder="Date: "+ticketData.get(position).getCreated();
-        holder.date.setText(placeHolder);
+        placeHolder = ticketData.get(position).getCreated();
+        holder.date.setText(placeHolder.substring(0, 10));
 
     }
 

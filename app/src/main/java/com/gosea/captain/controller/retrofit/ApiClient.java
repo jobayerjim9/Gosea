@@ -2,6 +2,7 @@ package com.gosea.captain.controller.retrofit;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,11 +30,11 @@ public class ApiClient {
 
     public static Retrofit getClient(Context context) {
 
-        SharedPreferences sharedPreferences=context.getSharedPreferences(context.getString(R.string.user_file),Context.MODE_PRIVATE);
-        final String token=sharedPreferences.getString(context.getString(R.string.token_file),"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoxLCJ1c2VybmFtZSI6ImJpbGFsam1hbCIsImV4cCI6MTU5MTgyNjM0MiwiZW1haWwiOiJiaWxhbGptYWxAZ21haWwuY29tIiwib3JpZ19pYXQiOjE1OTEyMjE1NDJ9.WwjpWoElziHpmW3ylPN5uKm5n_dtS2UnqqicOCy69CU");
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.user_file), Context.MODE_PRIVATE);
+        final String token = sharedPreferences.getString(context.getString(R.string.token_file), null);
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
+        Log.d("token", " " + token);
         OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
                 .readTimeout(160, TimeUnit.SECONDS)
                 .writeTimeout(160, TimeUnit.SECONDS)
@@ -41,11 +42,16 @@ public class ApiClient {
                     @Override
                     public okhttp3.Response intercept(Interceptor.Chain chain) throws IOException {
                         Request originalRequest = chain.request();
-
+                        if (token != null) {
                             Request.Builder builder = originalRequest.newBuilder().header("Authorization",
                                     "Bearer " + token);
                             Request newRequest = builder.build();
                             return chain.proceed(newRequest);
+                        } else {
+                            Request.Builder builder = originalRequest.newBuilder();
+                            Request newRequest = builder.build();
+                            return chain.proceed(newRequest);
+                        }
 
 
                     }

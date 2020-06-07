@@ -16,7 +16,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ui.activity.TripDetailsActivity"></activity>
+        <activity android:name=".ui.activity.ProfileActivity"></activity>
+        <activity android:name=".ui.activity.TripDetailsActivity" />
         <activity android:name=".ui.activity.TicketDetailActivity" />
         <activity android:name=".ui.activity.BarCodeActivity" />
         <activity android:name=".ui.activity.SplashActivity">

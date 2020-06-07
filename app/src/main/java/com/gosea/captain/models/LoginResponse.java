@@ -3,7 +3,7 @@ package com.gosea.captain.models;
 import com.google.gson.annotations.SerializedName;
 
 public class LoginResponse {
-    @SerializedName("data")
+    @SerializedName("token")
     private String token;
     @SerializedName("status")
     private String status;

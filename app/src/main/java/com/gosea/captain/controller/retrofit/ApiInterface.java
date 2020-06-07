@@ -6,6 +6,7 @@ import com.gosea.captain.models.CheckedStatusResponse;
 import com.gosea.captain.models.LoginBody;
 import com.gosea.captain.models.LoginResponse;
 import com.gosea.captain.models.QueueModel;
+import com.gosea.captain.models.profile.PasswordChangeBody;
 import com.gosea.captain.models.profile.ProfileResponse;
 import com.gosea.captain.models.queue.QueueResponseModel;
 import com.gosea.captain.models.ticket.TicketData;
@@ -57,6 +58,7 @@ public interface ApiInterface {
     @GET("dt_status_inv/")
     Call<ArrayList<TicketData>> getTripHistory(@Query("status") String status);
 
-
+    @POST("uauth/")
+    Call<BasicResponse> changePassword(@Body PasswordChangeBody passwordChangeBody);
 
 }
