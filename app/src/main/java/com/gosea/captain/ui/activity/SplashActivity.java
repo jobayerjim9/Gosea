@@ -42,11 +42,11 @@ public class SplashActivity extends AppCompatActivity {
     }
 
     private void signIn() {
-        SharedPreferences sharedPreferences=getSharedPreferences(getString(R.string.user_file),Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.user_file), Context.MODE_PRIVATE);
+        final String username = sharedPreferences.getString(getString(R.string.username_file), null);
+        final String password = sharedPreferences.getString(getString(R.string.password_file), null);
 
-        final String username=sharedPreferences.getString(getString(R.string.username_file),null);
-        final String password=sharedPreferences.getString(getString(R.string.username_file),null);
-        if (username!=null && password!=null) {
+        if (username != null && password != null) {
             LoginBody loginBody = new LoginBody(username, password);
             ApiInterface apiInterface = ApiClient.getClient(SplashActivity.this).create(ApiInterface.class);
             Call<LoginResponse> call = apiInterface.getLogin(loginBody);

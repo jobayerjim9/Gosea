@@ -7,9 +7,12 @@
     <string name="trip_file" translatable="false">trip</string>
     <string name="trip_exist" translatable="false">trip_exist</string>
     <string name="trip_id" translatable="false">trip_id</string>
+    <string name="trip_time" translatable="false">trip_time</string>
     <string name="trip_minute" translatable="false">trip_minute</string>
+    <string name="trip_second" translatable="false">trip_second</string>
     <string name="lang_file" translatable="false">lang_minute</string>
     <string name="language" translatable="false">lang_key</string>
+
 
 
     <string name="home">Home</string>
@@ -75,6 +78,10 @@
     <string name="enter_current_password">Enter Current Password</string>
     <string name="pass_change">Password Changed!</string>
     <string name="pass_not_change">Password Not Changed</string>
+    <string name="view_trip">View Trip</string>
+    <string name="trip_started">Trip Started!</string>
+    <string name="trip_not_start">Trip Cannot Be Start Or Finished</string>
+    <string name="already_finished">Trip Already Finished!</string>
 
 
 </resources>

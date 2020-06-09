@@ -12,6 +12,8 @@ import com.gosea.captain.models.queue.QueueResponseModel;
 import com.gosea.captain.models.ticket.TicketData;
 import com.gosea.captain.models.ticket.TicketResponse;
 import com.gosea.captain.models.trips.TripStartBody;
+import com.gosea.captain.models.trips.TripStartResponse;
+import com.gosea.captain.models.trips.TripTimeRemainingResponse;
 
 import java.util.ArrayList;
 
@@ -47,7 +49,7 @@ public interface ApiInterface {
     Call<TicketResponse> getTicketDetails(@Query("barcode") String barcode);
 
     @POST("trips/")
-    Call<BasicResponse> startTrip(@Body TripStartBody tripStartBody);
+    Call<TripStartResponse> startTrip(@Body TripStartBody tripStartBody);
 
     @PATCH("trips_end/{id}")
     Call<BasicResponse> endTrip(@Path("id") String id);
@@ -60,5 +62,8 @@ public interface ApiInterface {
 
     @POST("uauth/")
     Call<BasicResponse> changePassword(@Body PasswordChangeBody passwordChangeBody);
+
+    @GET("trips_dtl/")
+    Call<TripTimeRemainingResponse> getRemainingTime(@Query("id") String id);
 
 }

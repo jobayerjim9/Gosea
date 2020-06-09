@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import com.gosea.captain.controller.retrofit.ApiClient;
 import com.gosea.captain.controller.retrofit.ApiInterface;
 import com.gosea.captain.models.BasicResponse;
 import com.gosea.captain.models.trips.TripStartBody;
+import com.gosea.captain.models.trips.TripStartResponse;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -50,7 +52,7 @@ public class TicketDetailActivity extends AppCompatActivity {
         startTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tripStart(id, duration);
+                tripStart(id);
             }
         });
 
@@ -60,35 +62,38 @@ public class TicketDetailActivity extends AppCompatActivity {
 
     }
 
-    private void tripStart(int id,int minute) {
-        String a=id+"";
-        ApiInterface apiInterface= ApiClient.getClient(TicketDetailActivity.this).create(ApiInterface.class);
-        TripStartBody tripStartBody=new TripStartBody(a);
-        Call<BasicResponse> call=apiInterface.startTrip(tripStartBody);
-        call.enqueue(new Callback<BasicResponse>() {
+    private void tripStart(int id) {
+        String a = id + "";
+        ApiInterface apiInterface = ApiClient.getClient(TicketDetailActivity.this).create(ApiInterface.class);
+        TripStartBody tripStartBody = new TripStartBody(a);
+        Call<TripStartResponse> call = apiInterface.startTrip(tripStartBody);
+        call.enqueue(new Callback<TripStartResponse>() {
             @Override
-            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
-                Toast.makeText(TicketDetailActivity.this, "Trip Started!", Toast.LENGTH_SHORT).show();
-                SharedPreferences sharedPreferences=getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor=sharedPreferences.edit();
-                editor.putBoolean(getString(R.string.trip_exist),true);
-                editor.putInt(getString(R.string.trip_id),id);
-                editor.putInt(getString(R.string.trip_minute),minute);
-                editor.apply();
-                Intent intent=new Intent(TicketDetailActivity.this,TripDetailsActivity.class);
-                intent.putExtra("minute",minute);
-                intent.putExtra("id",id);
-                startActivity(intent);
-                finish();
+            public void onResponse(Call<TripStartResponse> call, Response<TripStartResponse> response) {
+                Log.d("tripStartResponse", response.code() + "");
+                TripStartResponse tripStartResponse = response.body();
+                if (tripStartResponse != null) {
+                    Toast.makeText(TicketDetailActivity.this, R.string.trip_started, Toast.LENGTH_SHORT).show();
+                    SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.putBoolean(getString(R.string.trip_exist), true);
+                    editor.putInt(getString(R.string.trip_id), tripStartResponse.getId());
+                    editor.apply();
+                    Intent intent = new Intent(TicketDetailActivity.this, TripDetailsActivity.class);
+                    intent.putExtra("id", tripStartResponse.getId());
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(TicketDetailActivity.this, R.string.trip_not_start, Toast.LENGTH_SHORT).show();
+                }
 
             }
 
             @Override
-            public void onFailure(Call<BasicResponse> call, Throwable t) {
+            public void onFailure(Call<TripStartResponse> call, Throwable t) {
                 Toast.makeText(TicketDetailActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
 

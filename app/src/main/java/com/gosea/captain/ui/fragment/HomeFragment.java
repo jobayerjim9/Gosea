@@ -3,6 +3,7 @@ package com.gosea.captain.ui.fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 
@@ -29,6 +30,7 @@ import com.gosea.captain.models.profile.ProfileResponse;
 import com.gosea.captain.models.ticket.TicketResponse;
 import com.gosea.captain.ui.activity.BarCodeActivity;
 import com.gosea.captain.ui.activity.TicketDetailActivity;
+import com.gosea.captain.ui.activity.TripDetailsActivity;
 import com.squareup.picasso.Picasso;
 
 import retrofit2.Call;
@@ -40,7 +42,7 @@ public class HomeFragment extends Fragment {
     ImageView searchButton, profileImage;
     TextView queueStatus, queueText, checkStatus, usernameHome;
     ProfileResponse user;
-    CardView queueButton, scanTicket;
+    CardView queueButton, scanTicket, viewTripCard;
     private Context context;
 
     public HomeFragment() {
@@ -57,6 +59,7 @@ public class HomeFragment extends Fragment {
         checkStatus = v.findViewById(R.id.checkStatus);
         profileImage = v.findViewById(R.id.profileImage);
         searchText = v.findViewById(R.id.searchText);
+        viewTripCard = v.findViewById(R.id.viewTripCard);
         searchButton = v.findViewById(R.id.searchButton);
         scanTicket = v.findViewById(R.id.scanTicket);
         queueStatus = v.findViewById(R.id.queueStatus);
@@ -82,6 +85,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+
         getProfile();
         return v;
 
@@ -268,15 +272,40 @@ public class HomeFragment extends Fragment {
         });
 
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.context=context;
+        this.context = context;
     }
 
     @Override
     public void onResume() {
         super.onResume();
         getProfile();
+        checkTrip();
+    }
+
+    int id, minute;
+
+    private void checkTrip() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
+        boolean existTrip = sharedPreferences.getBoolean(getString(R.string.trip_exist), false);
+        if (existTrip) {
+            id = sharedPreferences.getInt(getString(R.string.trip_id), 0);
+            viewTripCard.setVisibility(View.VISIBLE);
+            viewTripCard.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context, TripDetailsActivity.class);
+
+                    intent.putExtra("id", id);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            viewTripCard.setVisibility(View.GONE);
+        }
+
     }
 }

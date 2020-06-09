@@ -12,6 +12,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -35,21 +36,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initUi() {
-
-        SharedPreferences sharedPreferences=getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
-        boolean existTrip=sharedPreferences.getBoolean(getString(R.string.trip_exist),false);
-        if (existTrip) {
-            int id=sharedPreferences.getInt(getString(R.string.trip_id),0);
-            int minute=sharedPreferences.getInt(getString(R.string.trip_minute),0);
-            Intent intent=new Intent(this,TripDetailsActivity.class);
-            intent.putExtra("minute",minute);
-            intent.putExtra("id",id);
-            startActivity(intent);
+        try {
+            SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
+            boolean existTrip = sharedPreferences.getBoolean(getString(R.string.trip_exist), false);
+            if (existTrip) {
+                int id = sharedPreferences.getInt(getString(R.string.trip_id), 0);
+                Intent intent = new Intent(this, TripDetailsActivity.class);
+                intent.putExtra("id", id);
+                startActivity(intent);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-
-        ViewPager2 viewPager=findViewById(R.id.viewPager);
-        BottomNavigationView bottomNavigationView=findViewById(R.id.bottomNavigationView);
-        ViewPagerAdapter viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager(),getLifecycle());
+        ViewPager2 viewPager = findViewById(R.id.viewPager);
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottomNavigationView);
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager(), getLifecycle());
         viewPagerAdapter.addFragment(new HomeFragment());
         viewPagerAdapter.addFragment(new AccountFragment());
         viewPagerAdapter.addFragment(new QueueFragment());
@@ -82,5 +83,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        Log.d("App Destroyed", "App Destroyed");
+        editor.putBoolean(getString(R.string.trip_time), false);
+        editor.apply();
 
+    }
 }

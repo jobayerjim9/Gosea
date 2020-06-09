@@ -63,6 +63,10 @@
     <string name="enter_current_password">ادخل كلمة السر الحاليه</string>
     <string name="pass_change">تم تغيير كلمة السر</string>
     <string name="pass_not_change">لمم يتم تغيير كلمة السر</string>
+    <string name="view_trip">تفاصيل الرحلة</string>
+    <string name="trip_started">بدأت الرحلة</string>
+    <string name="trip_not_start">لايمكن البدأ بالرحلة</string>
+    <string name="already_finished">تم انتهاء الرحلة</string>
 
 
 </resources>
