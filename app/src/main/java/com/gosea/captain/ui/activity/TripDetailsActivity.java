@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.NetworkRequest;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.PersistableBundle;
@@ -107,6 +108,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         ComponentName componentName = new ComponentName(TripDetailsActivity.this, BackgroundTimer.class);
         JobInfo jobInfo = new JobInfo.Builder(1, componentName)
                 .setPersisted(true)
+                .setOverrideDeadline(0)
                 .build();
         jobScheduler = (JobScheduler) TripDetailsActivity.this.getSystemService(JOB_SCHEDULER_SERVICE);
         assert jobScheduler != null;
@@ -128,7 +130,9 @@ public class TripDetailsActivity extends AppCompatActivity {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.clear();
                     editor.apply();
-                    secondTimer1.cancel();
+                    if (secondTimer1 != null) {
+                        secondTimer1.cancel();
+                    }
                     stopService(new Intent(TripDetailsActivity.this, BackgroundTimer.class));
                     Toast.makeText(TripDetailsActivity.this, R.string.trip_ended_success, Toast.LENGTH_SHORT).show();
                     finish();

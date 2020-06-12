@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="home">الرئيسية</string>
-    <string name="profile">إعدادات</string>
-    <string name="account">الملف الشخصي</string>
+    <string name="account">إعدادات</string>
+    <string name="profile">الملف الشخصي</string>
     <string name="queue">الطابور</string>
     <string name="trips">الرحلات</string>
     <string name="sign_in">دخول</string>
@@ -67,6 +67,11 @@
     <string name="trip_started">بدأت الرحلة</string>
     <string name="trip_not_start">لايمكن البدأ بالرحلة</string>
     <string name="already_finished">تم انتهاء الرحلة</string>
+    <string name="not_checked_in">غير مسجل دخول</string>
+    <string name="not_in_queue">لست مسجل بالطابور</string>
+    <string name="already_in_trip">انت حاليا في رحلة</string>
+    <string name="cannot_check_out">انت حليا في رحله لا يمكن الخروج</string>
+    <string name="checked_out">تم تسجيل الخروج بنجاح</string>
 
 
 </resources>

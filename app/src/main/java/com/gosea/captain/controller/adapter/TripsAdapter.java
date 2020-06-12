@@ -33,7 +33,7 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsViewHol
     public void onBindViewHolder(@NonNull TripsViewHolder holder, int position) {
         String placeHolder = ticketData.get(position).getOrder().getName();
         holder.custName.setText(placeHolder);
-        placeHolder = ticketData.get(position).getOrder().getPeoples() + "";
+        placeHolder = ticketData.get(position).getOrder().getPeoples() + " " + context.getString(R.string.people);
         holder.totalPeople.setText(placeHolder);
         placeHolder = ticketData.get(position).getOrder().getTimeslot().getName();
         holder.duration.setText(placeHolder);

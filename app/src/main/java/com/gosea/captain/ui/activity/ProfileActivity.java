@@ -102,6 +102,7 @@ public class ProfileActivity extends AppCompatActivity {
                     Log.d("passwordStatus", basicResponse.getStatus() + "");
                     if (basicResponse.getStatus() == 200) {
                         Toast.makeText(ProfileActivity.this, R.string.pass_change, Toast.LENGTH_SHORT).show();
+                        finish();
                     } else {
                         Toast.makeText(ProfileActivity.this, R.string.pass_not_change, Toast.LENGTH_SHORT).show();
                     }

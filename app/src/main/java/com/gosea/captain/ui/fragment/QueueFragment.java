@@ -47,6 +47,7 @@ public class QueueFragment extends Fragment {
     }
 
     private void getQueue() {
+
         ApiInterface apiInterface= ApiClient.getClient(context).create(ApiInterface.class);
         Call<ArrayList<QueueResponseModel>> call=apiInterface.getQueueList();
         call.enqueue(new Callback<ArrayList<QueueResponseModel>>() {
@@ -54,6 +55,7 @@ public class QueueFragment extends Fragment {
             public void onResponse(Call<ArrayList<QueueResponseModel>> call, Response<ArrayList<QueueResponseModel>> response) {
                 ArrayList<QueueResponseModel> temp=response.body();
                 if (temp!=null) {
+                    queueResponseModels.clear();
                     queueResponseModels.addAll(temp);
                     queueAdapter.notifyDataSetChanged();
                 }
@@ -68,8 +70,14 @@ public class QueueFragment extends Fragment {
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        getQueue();
+    }
+
+    @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        this.context=context;
+        this.context = context;
     }
 }

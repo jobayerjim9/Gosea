@@ -43,8 +43,9 @@ public class HomeFragment extends Fragment {
     TextView queueStatus, queueText, checkStatus, usernameHome;
     ProfileResponse user;
     CardView queueButton, scanTicket, viewTripCard;
+    ProfileResponse profile;
     private Context context;
-
+    private boolean queue = false;
     public HomeFragment() {
         // Required empty public constructor
     }
@@ -69,6 +70,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(context, BarCodeActivity.class));
+
             }
         });
         searchButton.setOnClickListener(new View.OnClickListener() {
@@ -99,9 +101,11 @@ public class HomeFragment extends Fragment {
             public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
                 ProfileResponse profileResponse=response.body();
                 if (profileResponse!=null) {
+                    profile = profileResponse;
                     Log.d("name", profileResponse.getUsername());
                     usernameHome.setText(profileResponse.getUsername());
                     Picasso.get().load("http://157.245.181.14:8080" + profileResponse.getProfile().getPic()).into(profileImage);
+                    queue = profileResponse.getProfile().isQ_status();
                     if (profileResponse.getProfile().isQ_status()) {
                         setInQueue();
                     } else {
@@ -110,6 +114,7 @@ public class HomeFragment extends Fragment {
                     if (profileResponse.getProfile().isStatus()) {
                         setInCheck();
                     } else {
+
                         setNotInCheck();
                     }
                 }
@@ -191,6 +196,7 @@ public class HomeFragment extends Fragment {
                 if (basicResponse!=null) {
                     if (basicResponse.getStatus()==200) {
                         Toast.makeText(context, R.string.get_out_from_queue, Toast.LENGTH_SHORT).show();
+                        queue = false;
                         setNotInQueue();
                     }
                 }
@@ -206,29 +212,68 @@ public class HomeFragment extends Fragment {
     }
 
     private void registerQueue() {
-        ProgressDialog progressDialoe=new ProgressDialog(context);
-        progressDialoe.setCancelable(false);
-        progressDialoe.setMessage(getString(R.string.registering_queue));
-        progressDialoe.show();
-        ApiInterface apiInterface=ApiClient.getClient(context).create(ApiInterface.class);
-        Call<QueueModel> call=apiInterface.getQueue();
-        call.enqueue(new Callback<QueueModel>() {
-            @Override
-            public void onResponse(Call<QueueModel> call, Response<QueueModel> response) {
-                QueueModel queueModel=response.body();
-                progressDialoe.dismiss();
-                if (queueModel!=null) {
-                    Toast.makeText(context, R.string.you_are_in_queue, Toast.LENGTH_SHORT).show();
-                    setInQueue();
-                }
-            }
+        if (profile.getProfile().isStatus()) {
+            SharedPreferences sharedPreferences = context.getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
+            boolean exist = sharedPreferences.getBoolean(getString(R.string.trip_exist), false);
+            if (exist) {
+                int min = sharedPreferences.getInt(getString(R.string.trip_minute), 0);
+                if (min < 3) {
+                    ProgressDialog progressDialoe = new ProgressDialog(context);
+                    progressDialoe.setCancelable(false);
+                    progressDialoe.setMessage(getString(R.string.registering_queue));
+                    progressDialoe.show();
+                    ApiInterface apiInterface = ApiClient.getClient(context).create(ApiInterface.class);
+                    Call<QueueModel> call = apiInterface.getQueue();
+                    call.enqueue(new Callback<QueueModel>() {
+                        @Override
+                        public void onResponse(Call<QueueModel> call, Response<QueueModel> response) {
+                            QueueModel queueModel = response.body();
+                            progressDialoe.dismiss();
+                            if (queueModel != null) {
+                                queue = true;
+                                Toast.makeText(context, R.string.you_are_in_queue, Toast.LENGTH_SHORT).show();
+                                setInQueue();
+                            }
+                        }
 
-            @Override
-            public void onFailure(Call<QueueModel> call, Throwable t) {
-                Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                progressDialoe.dismiss();
+                        @Override
+                        public void onFailure(Call<QueueModel> call, Throwable t) {
+                            Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                            progressDialoe.dismiss();
+                        }
+                    });
+                } else {
+                    Toast.makeText(context, R.string.already_in_trip, Toast.LENGTH_SHORT).show();
+                }
+            } else {
+                ProgressDialog progressDialoe = new ProgressDialog(context);
+                progressDialoe.setCancelable(false);
+                progressDialoe.setMessage(getString(R.string.registering_queue));
+                progressDialoe.show();
+                ApiInterface apiInterface = ApiClient.getClient(context).create(ApiInterface.class);
+                Call<QueueModel> call = apiInterface.getQueue();
+                call.enqueue(new Callback<QueueModel>() {
+                    @Override
+                    public void onResponse(Call<QueueModel> call, Response<QueueModel> response) {
+                        QueueModel queueModel = response.body();
+                        progressDialoe.dismiss();
+                        if (queueModel != null) {
+                            queue = true;
+                            Toast.makeText(context, R.string.you_are_in_queue, Toast.LENGTH_SHORT).show();
+                            setInQueue();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<QueueModel> call, Throwable t) {
+                        Toast.makeText(context, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                        progressDialoe.dismiss();
+                    }
+                });
             }
-        });
+        } else {
+            Toast.makeText(context, R.string.not_checked_in, Toast.LENGTH_SHORT).show();
+        }
 
     }
     private void validateCode(String code) {

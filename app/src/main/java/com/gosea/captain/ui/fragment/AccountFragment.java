@@ -138,26 +138,32 @@ public class AccountFragment extends Fragment {
     }
 
     private void checkOut() {
-        ApiInterface apiInterface=ApiClient.getClient(getContext()).create(ApiInterface.class);
-        Call<CheckOutStatus> call=apiInterface.checkOut();
-        call.enqueue(new Callback<CheckOutStatus>() {
-            @Override
-            public void onResponse(Call<CheckOutStatus> call, Response<CheckOutStatus> response) {
-                CheckOutStatus checkOutStatus=response.body();
-                if (checkOutStatus!=null) {
-                    if (!checkOutStatus.isStatus()) {
-                        setCheckIn();
-                        Toast.makeText(getContext(), "Checked Out Successfully", Toast.LENGTH_SHORT).show();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
+        boolean trip = sharedPreferences.getBoolean(getString(R.string.trip_exist), false);
+        if (trip) {
+            Toast.makeText(context, R.string.cannot_check_out, Toast.LENGTH_SHORT).show();
+        } else {
+            ApiInterface apiInterface = ApiClient.getClient(getContext()).create(ApiInterface.class);
+            Call<CheckOutStatus> call = apiInterface.checkOut();
+            call.enqueue(new Callback<CheckOutStatus>() {
+                @Override
+                public void onResponse(Call<CheckOutStatus> call, Response<CheckOutStatus> response) {
+                    CheckOutStatus checkOutStatus = response.body();
+                    if (checkOutStatus != null) {
+                        if (!checkOutStatus.isStatus()) {
+                            setCheckIn();
+                            Toast.makeText(getContext(), R.string.checked_out, Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }
-            }
 
-            @Override
-            public void onFailure(Call<CheckOutStatus> call, Throwable t) {
-                Toast.makeText(getContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-        
+                @Override
+                public void onFailure(Call<CheckOutStatus> call, Throwable t) {
+                    Toast.makeText(getContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
     }
 
     private void setCheckIn() {

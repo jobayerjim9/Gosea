@@ -49,10 +49,17 @@ public class TicketDetailActivity extends AppCompatActivity {
         placeHolder = getString(R.string.total_duration) + timeName;
         durationText.setText(placeHolder);
         Button startTrip = findViewById(R.id.startTrip);
+
         startTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tripStart(id);
+                SharedPreferences sharedPreference = getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
+                boolean trip = sharedPreference.getBoolean(getString(R.string.trip_exist), false);
+                if (trip) {
+                    Toast.makeText(TicketDetailActivity.this, R.string.already_in_trip, Toast.LENGTH_SHORT).show();
+                } else {
+                    tripStart(id);
+                }
             }
         });
 
@@ -70,24 +77,29 @@ public class TicketDetailActivity extends AppCompatActivity {
         call.enqueue(new Callback<TripStartResponse>() {
             @Override
             public void onResponse(Call<TripStartResponse> call, Response<TripStartResponse> response) {
-                Log.d("tripStartResponse", response.code() + "");
-                TripStartResponse tripStartResponse = response.body();
-                if (tripStartResponse != null) {
-                    Toast.makeText(TicketDetailActivity.this, R.string.trip_started, Toast.LENGTH_SHORT).show();
-                    SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
-                    SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putBoolean(getString(R.string.trip_exist), true);
-                    editor.putInt(getString(R.string.trip_id), tripStartResponse.getId());
-                    editor.apply();
-                    Intent intent = new Intent(TicketDetailActivity.this, TripDetailsActivity.class);
-                    intent.putExtra("id", tripStartResponse.getId());
-                    startActivity(intent);
-                    finish();
+                if (response.code() == 200) {
+                    Log.d("tripStartResponse", response.code() + "");
+                    TripStartResponse tripStartResponse = response.body();
+                    if (tripStartResponse != null) {
+                        Toast.makeText(TicketDetailActivity.this, R.string.trip_started, Toast.LENGTH_SHORT).show();
+                        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        editor.putBoolean(getString(R.string.trip_exist), true);
+                        editor.putInt(getString(R.string.trip_id), tripStartResponse.getId());
+                        editor.apply();
+                        Intent intent = new Intent(TicketDetailActivity.this, TripDetailsActivity.class);
+                        intent.putExtra("id", tripStartResponse.getId());
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(TicketDetailActivity.this, R.string.trip_not_start, Toast.LENGTH_SHORT).show();
+                    }
+
                 } else {
                     Toast.makeText(TicketDetailActivity.this, R.string.trip_not_start, Toast.LENGTH_SHORT).show();
                 }
-
             }
+
 
             @Override
             public void onFailure(Call<TripStartResponse> call, Throwable t) {

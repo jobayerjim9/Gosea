@@ -35,7 +35,7 @@ public class QueueAdapter extends RecyclerView.Adapter<QueueAdapter.QueueViewHol
     public void onBindViewHolder(@NonNull QueueViewHolder holder, int position) {
         holder.position.setText(String.valueOf(queueModels.get(position).getQue_no()));
         holder.name.setText(queueModels.get(position).getCaptain().getUser().getUsername());
-
+        holder.boatName.setText(queueModels.get(position).getCaptain().getBoat().getName());
 
     }
 
@@ -45,11 +45,13 @@ public class QueueAdapter extends RecyclerView.Adapter<QueueAdapter.QueueViewHol
     }
 
     class QueueViewHolder extends RecyclerView.ViewHolder {
-        TextView position,name;
+        TextView position, name, boatName;
+
         public QueueViewHolder(@NonNull View itemView) {
             super(itemView);
-            position=itemView.findViewById(R.id.position);
-            name=itemView.findViewById(R.id.name);
+            position = itemView.findViewById(R.id.position);
+            name = itemView.findViewById(R.id.name);
+            boatName = itemView.findViewById(R.id.boatName);
         }
     }
 

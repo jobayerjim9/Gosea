@@ -84,6 +84,12 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        this.moveTaskToBack(true);
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);

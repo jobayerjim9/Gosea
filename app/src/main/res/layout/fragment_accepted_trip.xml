@@ -6,68 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".ui.fragment.AcceptedTripFragment">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/custName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:text="@string/name"
-            android:textAlignment="center"
-            android:textColor="@color/dark_sea"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/totalPeople"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:text="@string/people"
-            android:textAlignment="center"
-            android:textColor="@color/dark_sea"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/duration"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:text="@string/total"
-            android:textAlignment="center"
-            android:textColor="@color/dark_sea"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:fontFamily="@font/segoe_ui_bold"
-            android:text="@string/date"
-            android:textAlignment="center"
-            android:textColor="@color/dark_sea"
-            android:textSize="16sp" />
-    </LinearLayout>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/tripsRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>

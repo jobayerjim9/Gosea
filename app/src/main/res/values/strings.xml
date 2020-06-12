@@ -82,6 +82,11 @@
     <string name="trip_started">Trip Started!</string>
     <string name="trip_not_start">Trip Cannot Be Start Or Finished</string>
     <string name="already_finished">Trip Already Finished!</string>
+    <string name="not_checked_in">You are not checked in</string>
+    <string name="not_in_queue">You are not in queue!</string>
+    <string name="already_in_trip">You are already in a trip!</string>
+    <string name="cannot_check_out">You are in trip! You cannot check out</string>
+    <string name="checked_out">Checked Out Successfully</string>
 
 
 </resources>
