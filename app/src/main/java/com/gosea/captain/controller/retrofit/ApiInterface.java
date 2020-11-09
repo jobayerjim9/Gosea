@@ -3,11 +3,14 @@ package com.gosea.captain.controller.retrofit;
 import com.gosea.captain.models.BasicResponse;
 import com.gosea.captain.models.CheckOutStatus;
 import com.gosea.captain.models.CheckedStatusResponse;
+import com.gosea.captain.models.DistanceModel;
+import com.gosea.captain.models.FirebaseTokenUpdateBody;
 import com.gosea.captain.models.LoginBody;
 import com.gosea.captain.models.LoginResponse;
 import com.gosea.captain.models.QueueModel;
 import com.gosea.captain.models.profile.PasswordChangeBody;
 import com.gosea.captain.models.profile.ProfileResponse;
+import com.gosea.captain.models.queue.FixedQueueReponse;
 import com.gosea.captain.models.queue.QueueResponseModel;
 import com.gosea.captain.models.ticket.TicketData;
 import com.gosea.captain.models.ticket.TicketResponse;
@@ -17,6 +20,7 @@ import com.gosea.captain.models.trips.TripTimeRemainingResponse;
 
 import java.util.ArrayList;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -65,5 +69,20 @@ public interface ApiInterface {
 
     @GET("trips_dtl/")
     Call<TripTimeRemainingResponse> getRemainingTime(@Query("id") String id);
+
+    @POST("token/")
+    Call<ResponseBody> updateToken(@Body FirebaseTokenUpdateBody firebaseTokenUpdateBody);
+
+    @POST("auth-refresh/")
+    Call<FirebaseTokenUpdateBody> authRefresh(@Body FirebaseTokenUpdateBody firebaseTokenUpdateBody);
+
+    @PATCH("trips_cancel/{id}")
+    Call<BasicResponse> cancelTrip(@Path("id") String id);
+
+    @GET("queue-fixed/")
+    Call<ArrayList<FixedQueueReponse>> getFixedQueue();
+
+    @GET("distance/")
+    Call<ArrayList<DistanceModel>> getDistance();
 
 }

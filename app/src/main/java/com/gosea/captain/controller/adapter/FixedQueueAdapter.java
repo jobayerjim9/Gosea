@@ -9,34 +9,33 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.gson.annotations.SerializedName;
 import com.gosea.captain.R;
-import com.gosea.captain.models.QueueModel;
+import com.gosea.captain.models.queue.FixedQueueReponse;
 import com.gosea.captain.models.queue.QueueResponseModel;
 
 import java.util.ArrayList;
 
-public class QueueAdapter extends RecyclerView.Adapter<QueueAdapter.QueueViewHolder> {
+public class FixedQueueAdapter extends RecyclerView.Adapter<FixedQueueAdapter.QueueViewHolder> {
     private Context context;
-    private ArrayList<QueueResponseModel> queueModels;
+    private ArrayList<FixedQueueReponse> queueModels;
 
-    public QueueAdapter(Context context, ArrayList<QueueResponseModel> queueModels) {
+    public FixedQueueAdapter(Context context, ArrayList<FixedQueueReponse> queueModels) {
         this.context = context;
         this.queueModels = queueModels;
     }
 
+
     @NonNull
     @Override
     public QueueViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new QueueViewHolder(LayoutInflater.from(context).inflate(R.layout.queue_card,parent,false));
+        return new QueueViewHolder(LayoutInflater.from(context).inflate(R.layout.queue_card, parent, false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull QueueViewHolder holder, int position) {
-        holder.position.setText(String.valueOf(queueModels.get(position).getQue_no()));
-        holder.name.setText(queueModels.get(position).getCaptain().getUser().getFirst_name() + " " + queueModels.get(position).getCaptain().getUser().getLast_name());
-        holder.boatName.setText(queueModels.get(position).getCaptain().getBoat().getName());
-
+        holder.position.setText(String.valueOf(queueModels.get(position).getAsign_q()));
+        holder.name.setText(queueModels.get(position).getUser().getFirst_name() + " " + queueModels.get(position).getUser().getLast_name());
+        holder.boatName.setText(queueModels.get(position).getBoat().getName());
     }
 
     @Override
@@ -45,14 +44,13 @@ public class QueueAdapter extends RecyclerView.Adapter<QueueAdapter.QueueViewHol
     }
 
     class QueueViewHolder extends RecyclerView.ViewHolder {
-        TextView position, name, boatName;
+        TextView position, name, boatName, left_q;
 
         public QueueViewHolder(@NonNull View itemView) {
             super(itemView);
             position = itemView.findViewById(R.id.position);
             name = itemView.findViewById(R.id.name);
             boatName = itemView.findViewById(R.id.boatName);
-
         }
     }
 

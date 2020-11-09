@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.gosea.captain.R;
 import com.gosea.captain.controller.retrofit.ApiClient;
 import com.gosea.captain.controller.retrofit.ApiInterface;
+import com.gosea.captain.models.FirebaseTokenUpdateBody;
 import com.gosea.captain.models.LoginBody;
 import com.gosea.captain.models.LoginResponse;
 
@@ -51,12 +52,10 @@ public class LoginActivity extends AppCompatActivity {
         if (username.isEmpty()) {
             usernameInput.setErrorEnabled(true);
             usernameInput.setError(getString(R.string.please_enter_username));
-        }
-        else if (password.isEmpty()) {
+        } else if (password.isEmpty()) {
             passwordInput.setErrorEnabled(true);
             passwordInput.setError(getString(R.string.please_enter_password));
-        }
-        else {
+        } else {
             usernameInput.setErrorEnabled(false);
             passwordInput.setErrorEnabled(false);
             LoginBody loginBody=new LoginBody(username,password);
@@ -76,20 +75,45 @@ public class LoginActivity extends AppCompatActivity {
                             editor.apply();
                             startActivity(new Intent(LoginActivity.this, MainActivity.class));
                             Toast.makeText(LoginActivity.this, R.string.login_succesful, Toast.LENGTH_SHORT).show();
-                        }
-                        else {
+                        } else {
                             Toast.makeText(LoginActivity.this, R.string.login_unsuccess, Toast.LENGTH_SHORT).show();
                         }
 
+                    } else {
+                        refreshToken();
                     }
                 }
 
                 @Override
                 public void onFailure(Call<LoginResponse> call, Throwable t) {
+
                     Toast.makeText(LoginActivity.this, t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         }
 
+    }
+
+    private void refreshToken() {
+        SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.user_file), Context.MODE_PRIVATE);
+        final String token = sharedPreferences.getString(getString(R.string.token_file), null);
+        FirebaseTokenUpdateBody firebaseTokenUpdateBody = new FirebaseTokenUpdateBody(token);
+        ApiInterface apiInterface = ApiClient.getClient(LoginActivity.this).create(ApiInterface.class);
+        Call<FirebaseTokenUpdateBody> call = apiInterface.authRefresh(firebaseTokenUpdateBody);
+        call.enqueue(new Callback<FirebaseTokenUpdateBody>() {
+            @Override
+            public void onResponse(Call<FirebaseTokenUpdateBody> call, Response<FirebaseTokenUpdateBody> response) {
+                FirebaseTokenUpdateBody resp = response.body();
+                if (resp != null) {
+                    sharedPreferences.edit().putString(getString(R.string.token_file), resp.getToken()).apply();
+
+                }
+            }
+
+            @Override
+            public void onFailure(Call<FirebaseTokenUpdateBody> call, Throwable t) {
+
+            }
+        });
     }
 }

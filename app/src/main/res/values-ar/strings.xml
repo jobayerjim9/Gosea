@@ -3,7 +3,7 @@
     <string name="home">الرئيسية</string>
     <string name="account">إعدادات</string>
     <string name="profile">الملف الشخصي</string>
-    <string name="queue">الطابور</string>
+    <string name="queue">الطابور المتحرك</string>
     <string name="trips">الرحلات</string>
     <string name="sign_in">دخول</string>
     <string name="enter_username">ادخل اسم المستخدم</string>
@@ -72,6 +72,5 @@
     <string name="already_in_trip">انت حاليا في رحلة</string>
     <string name="cannot_check_out">انت حليا في رحله لا يمكن الخروج</string>
     <string name="checked_out">تم تسجيل الخروج بنجاح</string>
-
-
+    <string name="fixed_queue">الطابور الثابت</string>
 </resources>

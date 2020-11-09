@@ -14,7 +14,6 @@
     <string name="language" translatable="false">lang_key</string>
 
 
-
     <string name="home">Home</string>
     <string name="profile">Profile</string>
     <string name="account">Account</string>
@@ -87,6 +86,8 @@
     <string name="already_in_trip">You are already in a trip!</string>
     <string name="cannot_check_out">You are in trip! You cannot check out</string>
     <string name="checked_out">Checked Out Successfully</string>
+    <string name="fixed_queue">Fixed Queue</string>
+    <string name="check_info">check_info</string>
 
 
 </resources>

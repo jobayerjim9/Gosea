@@ -42,7 +42,7 @@ public class ApiClient {
                     @Override
                     public okhttp3.Response intercept(Interceptor.Chain chain) throws IOException {
                         Request originalRequest = chain.request();
-                        if (token != null) {
+                        if (token != null && !token.isEmpty()) {
                             Request.Builder builder = originalRequest.newBuilder().header("Authorization",
                                     "Bearer " + token);
                             Request newRequest = builder.build();

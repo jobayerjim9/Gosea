@@ -10,9 +10,21 @@ public class Captain {
     @SerializedName("boat")
     private Boat boat;
 
-    public Captain(User user, Boat boat) {
+    @SerializedName("left_q")
+    private int left_q;
+
+    public Captain(User user, Boat boat, int left_q) {
         this.user = user;
         this.boat = boat;
+        this.left_q = left_q;
+    }
+
+    public int getLeft_q() {
+        return left_q;
+    }
+
+    public void setLeft_q(int left_q) {
+        this.left_q = left_q;
     }
 
     public User getUser() {

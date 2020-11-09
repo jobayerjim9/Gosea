@@ -12,7 +12,6 @@
         android:icon="@drawable/ic_baseline_queue_24"
         android:title="@string/queue" />
 
-
     <item
         android:id="@+id/trips"
         android:enabled="true"

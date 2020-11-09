@@ -6,8 +6,9 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.CAMERA" />
-
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -18,7 +19,8 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
-        <activity android:name=".ui.activity.ProfileActivity"></activity>
+        <activity android:name=".ui.activity.NotificationActivity"></activity>
+        <activity android:name=".ui.activity.ProfileActivity" />
         <activity android:name=".ui.activity.TripDetailsActivity" />
         <activity android:name=".ui.activity.TicketDetailActivity" />
         <activity android:name=".ui.activity.BarCodeActivity" />
@@ -42,6 +44,17 @@
         <meta-data
             android:name="design_height_in_dp"
             android:value="731" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_noti" />
+
+        <service
+            android:name=".controller.helper.MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
     </application>
 
 </manifest>

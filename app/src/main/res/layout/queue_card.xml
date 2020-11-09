@@ -45,5 +45,6 @@
             android:textAlignment="center"
             android:textColor="@color/dark_sea"
             android:textSize="20sp" />
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

@@ -1,11 +1,13 @@
 package com.gosea.captain.ui.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.NetworkRequest;
@@ -31,7 +33,7 @@ import retrofit2.Response;
 
 public class TripDetailsActivity extends AppCompatActivity {
     TextView minuteCountdown, secondsCountdown;
-    Button finishTripButton;
+    Button finishTripButton, cancelTrip;
     int minute = 0;
     int id;
 
@@ -49,12 +51,29 @@ public class TripDetailsActivity extends AppCompatActivity {
             minuteCountdown = findViewById(R.id.minuteCountdown);
             secondsCountdown = findViewById(R.id.secondsCountdown);
             finishTripButton = findViewById(R.id.finishTripButton);
+            cancelTrip = findViewById(R.id.cancelTrip);
             finishTripButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    finishTrip(id);
+                    AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TripDetailsActivity.this);
+                    alertDialogBuilder.setTitle("Are You Sure?");
+                    alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finishTrip(id);
+                        }
+                    });
+                    alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    alertDialogBuilder.show();
+
                 }
             });
+
             SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
             boolean time = sharedPreferences.getBoolean(getString(R.string.trip_time), false);
             if (!time) {
@@ -148,6 +167,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         });
 
     }
+
 
     private CountDownTimer secondTimer1;
     private void startCountdown() {

@@ -1,8 +1,10 @@
 package com.gosea.captain.ui.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.gosea.captain.R;
+import com.gosea.captain.controller.helper.BackgroundTimer;
 import com.gosea.captain.controller.retrofit.ApiClient;
 import com.gosea.captain.controller.retrofit.ApiInterface;
 import com.gosea.captain.models.BasicResponse;
@@ -49,7 +52,30 @@ public class TicketDetailActivity extends AppCompatActivity {
         placeHolder = getString(R.string.total_duration) + timeName;
         durationText.setText(placeHolder);
         Button startTrip = findViewById(R.id.startTrip);
+        Button cancelTrip = findViewById(R.id.cancelTrip);
+        cancelTrip = findViewById(R.id.cancelTrip);
+        cancelTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(TicketDetailActivity.this);
+                alertDialogBuilder.setTitle("Are You Sure?");
+                alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        cancelTrip(id);
+                    }
+                });
+                alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        dialogInterface.dismiss();
+                    }
+                });
+                alertDialogBuilder.show();
 
+
+            }
+        });
         startTrip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -62,10 +88,33 @@ public class TicketDetailActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void cancelTrip(int id) {
+        Log.d("finishTrip", "FinishTripFromTripDetail");
+        ApiInterface apiInterface = ApiClient.getClient(TicketDetailActivity.this).create(ApiInterface.class);
+        Call<BasicResponse> call = apiInterface.cancelTrip(String.valueOf(id));
+        call.enqueue(new Callback<BasicResponse>() {
+            @Override
+            public void onResponse(Call<BasicResponse> call, Response<BasicResponse> response) {
+                if (response.code() != 400) {
+                    SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.clear();
+                    editor.apply();
+                    stopService(new Intent(TicketDetailActivity.this, BackgroundTimer.class));
+                    Toast.makeText(TicketDetailActivity.this, R.string.trip_ended_success, Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(TicketDetailActivity.this, "Response " + response.code(), Toast.LENGTH_SHORT).show();
+                }
+            }
 
+            @Override
+            public void onFailure(Call<BasicResponse> call, Throwable t) {
 
-
+            }
+        });
 
     }
 
