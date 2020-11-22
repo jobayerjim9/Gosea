@@ -31,6 +31,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.gosea.captain.R;
 import com.gosea.captain.controller.adapter.ViewPagerAdapter;
+import com.gosea.captain.controller.helper.SoundService;
 import com.gosea.captain.controller.retrofit.ApiClient;
 import com.gosea.captain.controller.retrofit.ApiInterface;
 import com.gosea.captain.models.CheckOutStatus;
@@ -155,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Log.d("App Destroyed", "App Destroyed");
         editor.putBoolean(getString(R.string.trip_time), false);
         editor.commit();
+        stopService(new Intent(this, SoundService.class));
 
     }
 
@@ -220,7 +222,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                         //   checkIn();
                     } else {
                         Toast.makeText(MainActivity.this, "You Are Not In Area", Toast.LENGTH_SHORT).show();
-                        checkOut();
+                        SharedPreferences checkOutPref = getSharedPreferences(getString(R.string.check_info), Context.MODE_PRIVATE);
+                        if (checkOutPref.getBoolean("check_in", false)) {
+                            checkOut();
+                        }
+
                     }
                 }
             }
@@ -233,6 +239,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     }
 
+    boolean done = false;
     private void checkOut() {
         SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
         boolean trip = sharedPreferences.getBoolean(getString(R.string.trip_exist), false);
@@ -244,11 +251,19 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
             call.enqueue(new Callback<CheckOutStatus>() {
                 @Override
                 public void onResponse(Call<CheckOutStatus> call, Response<CheckOutStatus> response) {
+                    SharedPreferences checkOutPref = getSharedPreferences(getString(R.string.check_info), Context.MODE_PRIVATE);
+                    checkOutPref.edit().clear().apply();
                     CheckOutStatus checkOutStatus = response.body();
                     if (checkOutStatus != null) {
-                        if (!checkOutStatus.isStatus()) {
-                            Toast.makeText(MainActivity.this, R.string.checked_out, Toast.LENGTH_SHORT).show();
-                            recreate();
+                        try {
+                            if (!checkOutStatus.isStatus() && !done) {
+                                done = true;
+                                Toast.makeText(MainActivity.this, R.string.checked_out, Toast.LENGTH_SHORT).show();
+                                recreate();
+
+                            }
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }

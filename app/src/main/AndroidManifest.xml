@@ -19,6 +19,9 @@
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+        <service
+            android:name=".controller.helper.SoundService"
+            android:enabled="true" />
         <activity android:name=".ui.activity.NotificationActivity"></activity>
         <activity android:name=".ui.activity.ProfileActivity" />
         <activity android:name=".ui.activity.TripDetailsActivity" />

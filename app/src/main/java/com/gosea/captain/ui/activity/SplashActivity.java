@@ -80,6 +80,8 @@ public class SplashActivity extends AppCompatActivity {
                             }
                         } else {
 
+                            SharedPreferences sharedPreferences = getSharedPreferences(getString(R.string.user_file), Context.MODE_PRIVATE);
+                            sharedPreferences.edit().clear().apply();
 
                             // refreshToken();
 

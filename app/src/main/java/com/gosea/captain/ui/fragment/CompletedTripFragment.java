@@ -42,7 +42,7 @@ public class CompletedTripFragment extends Fragment {
         View v= inflater.inflate(R.layout.fragment_completed_trip, container, false);
         RecyclerView tripsRecycler=v.findViewById(R.id.tripsRecycler);
         tripsRecycler.setLayoutManager(new LinearLayoutManager(context));
-        tripsAdapter=new TripsAdapter(getContext(),ticketData);
+        tripsAdapter = new TripsAdapter(getContext(), ticketData, "completed");
         tripsRecycler.setAdapter(tripsAdapter);
         getDetails();
         return v;

@@ -27,6 +27,7 @@ import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.PATCH;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -76,7 +77,7 @@ public interface ApiInterface {
     @POST("auth-refresh/")
     Call<FirebaseTokenUpdateBody> authRefresh(@Body FirebaseTokenUpdateBody firebaseTokenUpdateBody);
 
-    @PATCH("trips_cancel/{id}")
+    @PUT("trips_cancel/{id}")
     Call<BasicResponse> cancelTrip(@Path("id") String id);
 
     @GET("queue-fixed/")

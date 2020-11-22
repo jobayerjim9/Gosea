@@ -7,10 +7,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.gosea.captain.R;
 import com.gosea.captain.controller.adapter.TripsAdapter;
@@ -26,20 +28,29 @@ import retrofit2.Response;
 
 public class AcceptedTripFragment extends Fragment {
     TripsAdapter tripsAdapter;
-    private ArrayList<TicketData> ticketData=new ArrayList<>();
-private Context context;
+    private ArrayList<TicketData> ticketData = new ArrayList<>();
+    private Context context;
+    SwipeRefreshLayout swiperefresh;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-        View v= inflater.inflate(R.layout.fragment_accepted_trip, container, false);
-        RecyclerView tripsRecycler=v.findViewById(R.id.tripsRecycler);
+        View v = inflater.inflate(R.layout.fragment_accepted_trip, container, false);
+        RecyclerView tripsRecycler = v.findViewById(R.id.tripsRecycler);
+        swiperefresh = v.findViewById(R.id.swiperefresh);
         tripsRecycler.setLayoutManager(new LinearLayoutManager(context));
-        tripsAdapter=new TripsAdapter(getContext(),ticketData);
+        tripsAdapter = new TripsAdapter(getContext(), ticketData, "accepted");
         tripsRecycler.setAdapter(tripsAdapter);
         getDetails();
+        swiperefresh.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                getDetails();
+            }
+        });
+
         return v;
     }
 
@@ -49,8 +60,11 @@ private Context context;
         call.enqueue(new Callback<ArrayList<TicketData>>() {
             @Override
             public void onResponse(Call<ArrayList<TicketData>> call, Response<ArrayList<TicketData>> response) {
-                ArrayList<TicketData> temp=response.body();
-                if (temp!=null) {
+                if (swiperefresh.isRefreshing()) {
+                    swiperefresh.setRefreshing(false);
+                }
+                ArrayList<TicketData> temp = response.body();
+                if (temp != null) {
                     ticketData.addAll(temp);
                     tripsAdapter.notifyDataSetChanged();
                 }

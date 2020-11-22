@@ -35,7 +35,7 @@ public class FixedQueueAdapter extends RecyclerView.Adapter<FixedQueueAdapter.Qu
     public void onBindViewHolder(@NonNull QueueViewHolder holder, int position) {
         holder.position.setText(String.valueOf(queueModels.get(position).getAsign_q()));
         holder.name.setText(queueModels.get(position).getUser().getFirst_name() + " " + queueModels.get(position).getUser().getLast_name());
-        holder.boatName.setText(queueModels.get(position).getBoat().getName());
+        holder.boatName.setText(queueModels.get(position).getBoat().getArbicname());
     }
 
     @Override

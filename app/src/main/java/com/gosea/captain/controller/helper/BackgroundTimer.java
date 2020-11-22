@@ -1,8 +1,10 @@
 package com.gosea.captain.controller.helper;
 
+import android.app.Service;
 import android.app.job.JobParameters;
 import android.app.job.JobService;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.CountDownTimer;
 import android.util.Log;
@@ -23,7 +25,7 @@ public class BackgroundTimer extends JobService {
     private CountDownTimer secondTimer1, secondTimer2;
     SharedPreferences sharedPreferences;
     SharedPreferences.Editor editor;
-    boolean trip;
+    boolean trip, audioPlayed = false;
 
     @Override
     public boolean onStartJob(JobParameters params) {
@@ -54,6 +56,15 @@ public class BackgroundTimer extends JobService {
                 public void onTick(long millisUntilFinished) {
                     trip = sharedPreferences.getBoolean(getString(R.string.trip_exist), false);
                     if (trip) {
+                        if (minute < 3 && !audioPlayed) {
+                            try {
+                                startService(new Intent(BackgroundTimer.this, SoundService.class));
+                                audioPlayed = true;
+                            } catch (Exception e) {
+                                audioPlayed = false;
+                                e.printStackTrace();
+                            }
+                        }
                         sharedPreferences = getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
                         editor = sharedPreferences.edit();
                         editor.putInt(getString(R.string.trip_second), (int) (millisUntilFinished / 1000));
@@ -69,6 +80,15 @@ public class BackgroundTimer extends JobService {
                     trip = sharedPreferences.getBoolean(getString(R.string.trip_exist), false);
                     if (trip) {
                         minute--;
+                        if (minute < 3 && !audioPlayed) {
+                            try {
+                                startService(new Intent(BackgroundTimer.this, SoundService.class));
+                                audioPlayed = true;
+                            } catch (Exception e) {
+                                audioPlayed = false;
+                                e.printStackTrace();
+                            }
+                        }
                         if (minute != -1) {
                             sharedPreferences = getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
                             editor = sharedPreferences.edit();
@@ -126,7 +146,16 @@ public class BackgroundTimer extends JobService {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(BackgroundTimer.this, SoundService.class));
+    }
+
     private void finishTrip(int id) {
+        if (audioPlayed) {
+            stopService(new Intent(BackgroundTimer.this, SoundService.class));
+        }
         Log.d("finishTrip", "FinishTripFromBackground");
         ApiInterface apiInterface = ApiClient.getClient(this).create(ApiInterface.class);
         Call<BasicResponse> call = apiInterface.endTrip(String.valueOf(id));
