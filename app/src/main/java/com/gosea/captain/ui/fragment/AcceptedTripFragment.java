@@ -64,6 +64,7 @@ public class AcceptedTripFragment extends Fragment {
                     swiperefresh.setRefreshing(false);
                 }
                 ArrayList<TicketData> temp = response.body();
+                ticketData.clear();
                 if (temp != null) {
                     ticketData.addAll(temp);
                     tripsAdapter.notifyDataSetChanged();

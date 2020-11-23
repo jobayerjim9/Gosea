@@ -120,7 +120,7 @@ public class AccountFragment extends Fragment {
         logoutCard.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteQueue();
+                checkOutLogout();
 
             }
         });
@@ -187,6 +187,34 @@ public class AccountFragment extends Fragment {
                             checkOutPref.edit().putBoolean("check_in", false).apply();
                             Toast.makeText(getContext(), R.string.checked_out, Toast.LENGTH_SHORT).show();
                         }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CheckOutStatus> call, Throwable t) {
+                    Toast.makeText(getContext(), t.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+    }
+
+    private void checkOutLogout() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences(getString(R.string.trip_file), Context.MODE_PRIVATE);
+        boolean trip = sharedPreferences.getBoolean(getString(R.string.trip_exist), false);
+        if (trip) {
+            Toast.makeText(context, R.string.cannot_check_out, Toast.LENGTH_SHORT).show();
+        } else {
+            ApiInterface apiInterface = ApiClient.getClient(getContext()).create(ApiInterface.class);
+            Call<CheckOutStatus> call = apiInterface.checkOut();
+            call.enqueue(new Callback<CheckOutStatus>() {
+                @Override
+                public void onResponse(Call<CheckOutStatus> call, Response<CheckOutStatus> response) {
+                    CheckOutStatus checkOutStatus = response.body();
+                    if (checkOutStatus != null) {
+                        SharedPreferences checkOutPref = context.getSharedPreferences(getString(R.string.check_info), Context.MODE_PRIVATE);
+                        checkOutPref.edit().clear().apply();
+                        deleteQueue();
                     }
                 }
 
@@ -369,6 +397,7 @@ public class AccountFragment extends Fragment {
                 sharedPreferences.edit().clear().apply();
                 sharedPreferencesTrip.edit().clear().apply();
                 sharedPreferencesCheck.edit().clear().apply();
+
                 startActivity(new Intent(context, LoginActivity.class));
                 getActivity().finish();
 

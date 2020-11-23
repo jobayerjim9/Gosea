@@ -160,6 +160,8 @@ public class TripsAdapter extends RecyclerView.Adapter<TripsAdapter.TripsViewHol
             duration = itemView.findViewById(R.id.duration);
             tripButtons = itemView.findViewById(R.id.tripButtons);
             date = itemView.findViewById(R.id.date);
+            startButton = itemView.findViewById(R.id.startButton);
+            cancelButton = itemView.findViewById(R.id.cancelButton);
         }
     }
 }
